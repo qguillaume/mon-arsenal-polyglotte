@@ -100,4 +100,24 @@ function nextWord() {
   updateCard();
 }
 
+function searchWord() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  if (query.length < 2) return; // On attend au moins 2 lettres
+
+  const sourceLang = document.querySelector(
+    'input[name="source"]:checked',
+  ).value;
+
+  // On cherche dans la langue source sélectionnée
+  const foundIndex = vocabulaire.findIndex((item) =>
+    item[sourceLang].toLowerCase().includes(query),
+  );
+
+  if (foundIndex !== -1) {
+    currentIndex = foundIndex;
+    currentStep = -1; // Reset pour montrer le mot source
+    updateCard();
+  }
+}
+
 window.onload = loadVocab;

@@ -75,3 +75,24 @@ h1 { margin: 0; color: var(--accent); font-size: 1.8rem; letter-spacing: 1px; }
 .btn:hover { background: var(--accent-hover); }
 
 footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
+
+.search-container {
+    margin-bottom: 1.5rem;
+    width: 380px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+    border-color: var(--accent);
+}
