@@ -26,28 +26,52 @@ async function loadVocab() {
 function parseMD(data) {
   const lines = data.split("\n");
   masterVocab = [];
+
+  // Liste d'exclusion : mots qui finissent en "en" mais ne sont PAS des verbes
+  const exclusions = [
+    "draußen",
+    "zusammen",
+    "unten",
+    "oben",
+    "drüben",
+    "innen",
+    "morgen",
+    "schon",
+  ];
+
   lines.forEach((line) => {
     if (line.includes(",") && line.trim() !== "") {
       const parts = line.split(",").map((p) => p.trim());
+
       if (parts.length >= 2 && parts[0].toLowerCase() !== "allemand") {
         const deWord = parts[0];
         const frWord = parts[1];
 
-        // --- LOGIQUE HPI : AUTO-CLASSIFICATION ---
-        let type = "adj"; // Par défaut
+        // --- LOGIQUE HPI : AUTO-CLASSIFICATION AFFINÉE ---
+        let type = "adj"; // Par défaut (Adjectifs, adverbes, expressions)
 
-        // Détection Verbes (commence par minuscule ou contient pronom)
+        // Nettoyage pour la comparaison (minuscules et sans articles pour la liste d'exclusion)
+        const cleanWord = deWord.toLowerCase();
+
+        // 1. Détection Verbes
+        // Condition : commence par minuscule ET (finit par en/et OU contient un pronom)
+        // ET n'est pas dans la liste d'exclusions
         if (
           deWord.match(/^[a-z]/) &&
           (deWord.endsWith("en") ||
-            deWord.includes("Ich") ||
-            deWord.includes("Du"))
+            deWord.endsWith("et") ||
+            deWord.match(/^(ich|du|wir|sie|er|es)\s/i)) &&
+          !exclusions.includes(cleanWord)
         ) {
           type = "verbe";
         }
-        // Détection Noms (commence par Majuscule ou a un Article en DE)
-        else if (deWord.match(/^[A-Z]/) || deWord.match(/^(der|die|das)\s/)) {
-          type = "nom";
+        // 2. Détection Noms
+        // Condition : commence par Majuscule OU possède un article défini
+        else if (deWord.match(/^[A-Z]/) || deWord.match(/^(der|die|das)\s/i)) {
+          // On vérifie quand même que ce n'est pas une exclusion (ex: Morgen)
+          if (!exclusions.includes(cleanWord)) {
+            type = "nom";
+          }
         }
 
         masterVocab.push({
