@@ -25,12 +25,11 @@ function parseMD(data) {
   const lines = data.split("\n");
   vocabulaire = [];
   lines.forEach((line) => {
-    if (line.includes("|") && !line.includes("---")) {
-      const parts = line
-        .split("|")
-        .map((p) => p.trim())
-        .filter((p) => p !== "");
-      // On vérifie que ce n'est pas l'entête
+    // On vérifie s'il y a une virgule et on ignore les lignes vides
+    if (line.includes(",") && line.trim() !== "") {
+      const parts = line.split(",").map((p) => p.trim());
+
+      // On s'assure que ce n'est pas la ligne d'entête (Allemand, Français...)
       if (parts.length >= 2 && parts[0].toLowerCase() !== "allemand") {
         vocabulaire.push({
           de: parts[0] || "",
