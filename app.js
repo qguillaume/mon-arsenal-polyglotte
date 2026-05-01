@@ -7,6 +7,8 @@ const langNames = {
   en: "Anglais",
   es: "Espagnol",
 };
+// Variable master pour garder la source intacte
+let masterVocab = [];
 
 async function loadVocab() {
   try {
@@ -23,23 +25,42 @@ async function loadVocab() {
 
 function parseMD(data) {
   const lines = data.split("\n");
-  vocabulaire = [];
+  masterVocab = [];
   lines.forEach((line) => {
-    // On vérifie s'il y a une virgule et on ignore les lignes vides
     if (line.includes(",") && line.trim() !== "") {
       const parts = line.split(",").map((p) => p.trim());
-
-      // On s'assure que ce n'est pas la ligne d'entête (Allemand, Français...)
       if (parts.length >= 2 && parts[0].toLowerCase() !== "allemand") {
-        vocabulaire.push({
-          de: parts[0] || "",
-          fr: parts[1] || "",
+        const deWord = parts[0];
+        const frWord = parts[1];
+
+        // --- LOGIQUE HPI : AUTO-CLASSIFICATION ---
+        let type = "adj"; // Par défaut
+
+        // Détection Verbes (commence par minuscule ou contient pronom)
+        if (
+          deWord.match(/^[a-z]/) &&
+          (deWord.endsWith("en") ||
+            deWord.includes("Ich") ||
+            deWord.includes("Du"))
+        ) {
+          type = "verbe";
+        }
+        // Détection Noms (commence par Majuscule ou a un Article en DE)
+        else if (deWord.match(/^[A-Z]/) || deWord.match(/^(der|die|das)\s/)) {
+          type = "nom";
+        }
+
+        masterVocab.push({
+          de: deWord,
+          fr: frWord,
           en: parts[2] || "",
           es: parts[3] || "",
+          type: type,
         });
       }
     }
   });
+  vocabulaire = [...masterVocab]; // Initialise la vue actuelle
 }
 
 function syncLangs() {
@@ -94,7 +115,20 @@ document.getElementById("mainCard").onclick = () => {
 };
 
 function nextWord() {
-  if (vocabulaire.length === 0) return;
+  const filterValue = document.getElementById("typeFilter").value;
+
+  // Filtrage dynamique
+  if (filterValue === "all") {
+    vocabulaire = [...masterVocab];
+  } else {
+    vocabulaire = masterVocab.filter((item) => item.type === filterValue);
+  }
+
+  if (vocabulaire.length === 0) {
+    document.getElementById("wordDisplay").innerText = "Aucun mot trouvé";
+    return;
+  }
+
   currentIndex = Math.floor(Math.random() * vocabulaire.length);
   currentStep = -1;
   updateCard();

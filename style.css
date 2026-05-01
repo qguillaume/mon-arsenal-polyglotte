@@ -111,3 +111,15 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
     transform: scale(1.2);
     color: var(--accent-hover);
 }
+
+#typeFilter {
+    background: var(--bg-dark);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 150px;
+}
