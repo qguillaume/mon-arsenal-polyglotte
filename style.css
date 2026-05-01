@@ -8,6 +8,10 @@
     --border: #334155;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
@@ -85,6 +89,8 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
     margin-bottom: 1.5rem;
     width: 100%;           /* Changé de 380px à 100% */
     max-width: 380px;
+    display: flex; /* Force le centrage interne si besoin */
+    justify-content: center;
 }
 
 #searchInput {
@@ -140,23 +146,25 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
     .config-container {
         padding: 0.8rem;
         width: 100%;
-        max-width: 350px;
+        max-width: 380px;
     }
 
     .config-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+        flex-direction: row; /* Rétablit l'alignement horizontal */
+        flex-wrap: wrap;    /* Permet de revenir à la ligne si trop de langues */
+        align-items: center;
+        gap: 8px;
     }
 
     .config-row strong {
         width: 100%;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
+        display: block;
     }
 
     .search-container, .card {
         width: 100%;
-        max-width: 350px; /* S'adapte aux petits écrans */
+        max-width: 380px; /* S'adapte aux petits écrans */
     }
 
     .card {
@@ -174,8 +182,8 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
 
     .btn {
         width: 100%;
-        max-width: 350px;
-        padding: 0.8rem;
+        max-width: 380px;
+        padding: 1rem;
     }
 
     footer {
