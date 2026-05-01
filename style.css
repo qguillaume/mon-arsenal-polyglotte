@@ -96,3 +96,18 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
 #searchInput:focus {
     border-color: var(--accent);
 }
+
+.speaker-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.speaker-btn:hover {
+    transform: scale(1.2);
+    color: var(--accent-hover);
+}

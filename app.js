@@ -120,4 +120,27 @@ function searchWord() {
   }
 }
 
+function speakWord(event) {
+  // Empêche le clic sur le bouton de déclencher le clic sur la carte entière
+  event.stopPropagation();
+
+  const word =
+    currentStep === -1
+      ? document.getElementById("wordDisplay").innerText
+      : document.getElementById("subDisplay").innerText;
+
+  const langCode =
+    currentStep === -1
+      ? document.querySelector('input[name="source"]:checked').value
+      : getActiveTargets()[currentStep].id;
+
+  const utterance = new SpeechSynthesisUtterance(word);
+
+  // On définit la langue pour l'accent (fr-FR, de-DE, etc.)
+  const voiceMap = { fr: "fr-FR", de: "de-DE", en: "en-US", es: "es-ES" };
+  utterance.lang = voiceMap[langCode] || "de-DE";
+
+  window.speechSynthesis.speak(utterance);
+}
+
 window.onload = loadVocab;
