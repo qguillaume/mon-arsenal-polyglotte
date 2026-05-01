@@ -18,6 +18,9 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 header { text-align: center; margin-bottom: 1.5rem; }
@@ -44,7 +47,8 @@ h1 { margin: 0; color: var(--accent); font-size: 1.8rem; letter-spacing: 1px; }
     border-radius: 1.2rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     text-align: center;
-    width: 380px;
+    width: 100%;           /* Changé de 380px à 100% */
+    max-width: 380px;      /* Sécurité pour desktop */
     min-height: 220px;
     display: flex;
     flex-direction: column;
@@ -52,6 +56,7 @@ h1 { margin: 0; color: var(--accent); font-size: 1.8rem; letter-spacing: 1px; }
     border: 2px solid var(--accent);
     cursor: pointer;
     transition: all 0.3s ease;
+    box-sizing: border-box; /* Crucial pour inclure le padding dans la largeur */
 }
 
 .card:hover { transform: translateY(-5px); border-color: var(--accent-hover); }
@@ -78,7 +83,8 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
 
 .search-container {
     margin-bottom: 1.5rem;
-    width: 380px;
+    width: 100%;           /* Changé de 380px à 100% */
+    max-width: 380px;
 }
 
 #searchInput {
@@ -122,4 +128,77 @@ footer { position: fixed; bottom: 1rem; color: #475569; font-size: 0.7rem; }
     cursor: pointer;
     font-weight: bold;
     width: 150px;
+}
+
+/* --- RESPONSIVE DEPLOYMENT --- */
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .config-container {
+        padding: 0.8rem;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .config-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .config-row strong {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+
+    .search-container, .card {
+        width: 100%;
+        max-width: 350px; /* S'adapte aux petits écrans */
+    }
+
+    .card {
+        padding: 1.5rem;
+        min-height: 180px;
+    }
+
+    .word {
+        font-size: 1.8rem; /* Plus lisible sur mobile */
+    }
+
+    .sub-word {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 350px;
+        padding: 0.8rem;
+    }
+
+    footer {
+        position: relative; /* Évite de chevaucher les contrôles sur mobile */
+        margin-top: 2rem;
+        bottom: 0;
+    }
+}
+
+/* Optimisation des inputs et boutons pour le tactile */
+input[type="text"], select {
+    font-size: 16px !important; /* Empêche l'auto-zoom iOS */
+}
+
+.target-check, input[type="radio"] {
+    transform: scale(1.2); /* Plus facile à cocher au doigt */
+    margin-right: 8px;
+}
+
+label {
+    padding: 5px 0;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    cursor: pointer;
 }
